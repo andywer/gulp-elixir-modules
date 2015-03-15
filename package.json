@@ -1,0 +1,32 @@
+{
+  "name": "gulp-elixir-modules",
+  "version": "0.1.0",
+  "description": "Elixir extension for handling frontend modules easily.",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/andywer/gulp-elixir-modules.git"
+  },
+  "keywords": [
+    "gulp",
+    "elixir",
+    "modules",
+    "laravel",
+    "assets"
+  ],
+  "author": "Andy Wermke <andy@dev.next-step-software.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andywer/gulp-elixir-modules/issues"
+  },
+  "homepage": "https://github.com/andywer/gulp-elixir-modules",
+  "dependencies": {
+    "laravel-elixir": "*"
+  },
+  "devDependencies": {
+    "gulp": "^3.8.8"
+  }
+}
