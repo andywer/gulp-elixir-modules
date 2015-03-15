@@ -50,7 +50,7 @@ elixir(function (mix) {
 });
 ```
 
-## A well-conceived way to arrange the client-side assets
+## A well-conceived way to arrange client-side assets
 
 ### The Problem
 
