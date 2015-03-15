@@ -149,6 +149,8 @@ public/
     editor-icons.png
 ```
 
+You can now easily use these files in your web page using `<script>`, `<link>` and `<img>` tags. And because you have got functionally well-separated modules you are able to include just the functionality you need for the current page.
+
 
 ## API
 
