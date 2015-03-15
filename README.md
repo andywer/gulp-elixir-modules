@@ -1,4 +1,4 @@
-# gulp-elixir-modules
+# gulp-elixir-modules [![npm version](https://badge.fury.io/js/gulp-elixir-modules.svg)](http://badge.fury.io/js/gulp-elixir-modules)
 Elixir extension for handling frontend modules easily. Written for use with the famous [Laravel 5](http://laravel.com/)
 framework, but might also work for any other project using [gulp](http://gulpjs.com/).
 
