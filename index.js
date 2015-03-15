@@ -21,23 +21,31 @@ var fs     = require('fs');
 var path   = require('path');
 
 
+function objectKeys(object) {
+  var keys = [];
+
+  for (var key in object) {
+    if (object.hasOwnProperty(key)) { keys.push(key); }
+  }
+
+  return keys;
+}
+
 function defaultOptions (options, defaults) {
   options = options || {};
 
-  for (var key in defaults) {
-    if (!defaults.hasOwnProperty(key)) { continue; }
-
+  objectKeys(defaults).forEach(function (key) {
     if (typeof options[key] === 'undefined') {
       options[key] = defaults[key];
     }
-  }
+  });
 
   return options;
 }
 
 
-function bundleStyles (mix, moduleName, modulesDir) {
-  var moduleStylesPath = path.join(modulesDir, moduleName, 'styles');
+function bundleStyles (mix, moduleName, assetDirName, options) {
+  var moduleStylesPath = path.join(options.modulesDir, moduleName, assetDirName);
   var moduleCssFile = path.join(mix.cssOutput, moduleName + '.css');
 
   if (!fs.existsSync(moduleStylesPath)) { return null; }
@@ -47,8 +55,8 @@ function bundleStyles (mix, moduleName, modulesDir) {
   return moduleCssFile;
 }
 
-function bundleScripts (mix, moduleName, modulesDir) {
-  var moduleScriptsPath = path.join(modulesDir, moduleName, 'scripts');
+function bundleScripts (mix, moduleName, assetDirName, options) {
+  var moduleScriptsPath = path.join(options.modulesDir, moduleName, assetDirName);
   var moduleJsFile = path.join(mix.jsOutput, moduleName + '.js');
 
   if (!fs.existsSync(moduleScriptsPath)) { return null; }
@@ -58,35 +66,41 @@ function bundleScripts (mix, moduleName, modulesDir) {
   return moduleJsFile;
 }
 
-function bundleImages (mix, moduleName, modulesDir) {
-  var moduleImagesPath = path.join(modulesDir, moduleName, 'images');
+function bundleImages (mix, moduleName, assetDirName, options) {
+  var moduleImagesPath = path.join(options.modulesDir, moduleName, assetDirName);
 
   if (!fs.existsSync(moduleImagesPath)) { return null; }
 
   mix.copy(moduleImagesPath, path.join(mix.imgOutput || 'public/images', moduleName));
 
-  return moduleImagesPath;
+  return null;
 }
 
+
 function bundleModules (mix, moduleNames, options) {
-  var moduleBundleCssFiles = [];
-  var moduleBundleJsFiles = [];
+  var moduleBundleFiles = [];
 
   moduleNames.forEach(function (moduleName) {
-    var moduleCssFile = bundleStyles(mix, moduleName, options.modulesDir);
-    if (moduleCssFile) { moduleBundleCssFiles.push(moduleCssFile); }
+    objectKeys(options.filters).forEach(function (assetDirName) {
+      var filter = options.filters[assetDirName];
 
-    var moduleJsFile = bundleScripts(mix, moduleName, options.modulesDir);
-    if (moduleJsFile) { moduleBundleJsFiles.push(moduleJsFile); }
-
-    bundleImages(mix, moduleName, options.modulesDir);
+      var moduleOutFile = filter(mix, moduleName, assetDirName, options);
+      if (moduleOutFile) { moduleBundleFiles.push(moduleOutFile); }
+    });
   });
 
   if (options.version) {
-    mix.version(moduleBundleCssFiles.concat(moduleBundleJsFiles));
+    mix.version(moduleBundleFiles);
   }
 }
 
+
+var defaultFilters = {
+  // <directory name>: <asset action>
+  'scripts': bundleScripts,
+  'styles': bundleStyles,
+  'images': bundleImages
+};
 
 elixir.extend('modules', function (moduleNames, options) {
   var mix = this;
@@ -98,7 +112,8 @@ elixir.extend('modules', function (moduleNames, options) {
 
   options = defaultOptions(options, {
     modulesDir: mix.assetsDir,
-    version: false
+    version: false,
+    filters: defaultFilters
   });
 
   moduleNames = moduleNames || fs.readdirSync(options.modulesDir);
