@@ -124,8 +124,8 @@ resources/
       editor.css
 ```
 
-You see the advantage? It becomes easier to find what you are looking for even if split your files into smaller ones.
-It is easy to handle a great amount of files now and you have them separated by what they do what is a real benefit
+You see the advantage? It becomes easier to find what you are looking for, even if you split the files into smaller ones.
+It is easy to handle a great amount of files now and you have them separated by what they do, what is a real benefit
 if you want to lazy-load your assets or need to manage dependencies. Additionally you may name your files inside a
 module just as you want.
 
@@ -171,6 +171,8 @@ List of module names to compile. The default is to take all directory names in t
 ## Laravel 4
 
 You may use Elixir and gulp-elixir-modules with Laravel 4, too! Have a look at [https://medium.com/@specter_bg/using-laravel-elixir-with-laravel-4-24bc506ae1fd](https://medium.com/@specter_bg/using-laravel-elixir-with-laravel-4-24bc506ae1fd).
+
+But you can use Elixir and gulp-elixir-modules for any non-Laravel project, too. Just adapt the paths as shown in [Usage](#usage).
 
 
 ## License
